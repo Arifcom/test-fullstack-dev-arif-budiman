@@ -12,13 +12,15 @@ class ProductCreate extends Component
 
     public function save()
     {
+        // SECURITY: Validasi lengkap dengan unique constraint
         $validated = $this->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:products,name',
             'amount' => 'required|numeric|min:0',
             'qty' => 'required|integer|min:0',
         ], [
             'name.required' => 'Nama produk wajib diisi.',
             'name.max' => 'Nama produk maksimal 255 karakter.',
+            'name.unique' => 'Nama produk sudah digunakan. Silakan gunakan nama yang berbeda.',
             'amount.required' => 'Harga produk wajib diisi.',
             'amount.numeric' => 'Harga produk harus berupa angka.',
             'amount.min' => 'Harga produk tidak boleh kurang dari 0.',

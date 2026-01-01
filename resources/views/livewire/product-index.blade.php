@@ -1,3 +1,13 @@
+{{-- 
+    SECURITY: XSS Protection
+    ========================
+    Semua output dalam view ini menggunakan {{ }} syntax yang otomatis meng-escape HTML entities.
+    Ini mencegah XSS (Cross-Site Scripting) attacks dimana attacker mencoba inject JavaScript/HTML.
+    
+    Contoh: Jika nama produk = "<script>alert('XSS')</script>"
+    Output akan di-escape menjadi: "&lt;script&gt;alert('XSS')&lt;/script&gt;"
+    Sehingga ditampilkan sebagai text biasa, BUKAN dieksekusi sebagai JavaScript.
+--}}
 <div>
     <div class="mb-6">
         <div class="flex justify-between items-center">
@@ -42,6 +52,7 @@
                 @forelse ($products as $product)
                     <tr class="hover:bg-gray-50">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $product->id }}</td>
+                        {{-- XSS PROTECTION: {{ }} otomatis escape HTML special characters --}}
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $product->name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp {{ number_format($product->amount, 0, ',', '.') }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $product->qty }}</td>
