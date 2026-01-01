@@ -8,12 +8,32 @@ class ProductIndex extends Component
 {
     public $search = '';
 
-    public function delete($id)
+    public $confirmingProductDeletion = false;
+    public $productToDeleteId = null;
+
+    use \Livewire\WithPagination;
+
+    public function confirmDelete($id)
     {
-        $product = \App\Models\Product::findOrFail($id);
+        $this->confirmingProductDeletion = true;
+        $this->productToDeleteId = $id;
+    }
+
+    public function cancelDelete()
+    {
+        $this->confirmingProductDeletion = false;
+        $this->productToDeleteId = null;
+    }
+
+    public function delete()
+    {
+        $product = \App\Models\Product::findOrFail($this->productToDeleteId);
         $product->delete();
 
-        session()->flash('success', 'Produk berhasil dihapus!');
+        $this->confirmingProductDeletion = false;
+        $this->productToDeleteId = null;
+
+        $this->dispatch('notify', message: 'Produk berhasil dihapus!', type: 'success');
     }
 
     public function render()
