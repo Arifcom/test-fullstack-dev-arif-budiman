@@ -21,5 +21,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(191);
+        if (config('app.env') === 'production') {
+            config(['logging.channels.single.path' => '/tmp/laravel.log']);
+            config(['view.compiled' => '/tmp/views']);
+            config(['session.driver' => 'cookie']);
+        }
     }
 }
