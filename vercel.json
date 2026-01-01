@@ -7,6 +7,10 @@
     },
     "routes": [
         {
+            "src": "/build/(.*)",
+            "dest": "/public/build/$1"
+        },
+        {
             "src": "/(css|js|images|favicon.ico|favicon.png)/(.*)",
             "dest": "/public/$1/$2"
         },
@@ -21,6 +25,7 @@
         "APP_PACKAGES_CACHE": "/tmp/packages.php",
         "APP_ROUTES_CACHE": "/tmp/routes.php",
         "APP_SERVICES_CACHE": "/tmp/services.php",
-        "VIEW_COMPILED_PATH": "/tmp"
+        "VIEW_COMPILED_PATH": "/tmp",
+        "ASSET_URL": "https://test-fullstack-dev-arif-budiman.vercel.app"
     }
 }
