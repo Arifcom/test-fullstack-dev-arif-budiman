@@ -4,10 +4,28 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * StoreProductRequest
+ * 
+ * Form Request for validating product creation data.
+ * 
+ * This class handles validation for new product submissions including:
+ * - Unique name constraint
+ * - Numeric price validation with minimum value
+ * - Integer quantity validation with minimum value
+ * - Custom Indonesian error messages
+ * 
+ * @package App\Http\Requests
+ */
 class StoreProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     * 
+     * Currently returns true for all users. In production, you may want to
+     * add permission checks here (e.g., user roles, policies).
+     *
+     * @return bool
      */
     public function authorize(): bool
     {
@@ -20,39 +38,42 @@ class StoreProductRequest extends FormRequest
      * SECURITY NOTES:
      * ---------------
      * 1. 'name' - required|string|max:255|unique:products,name
-     *    - required: Mencegah NULL values yang dapat menyebabkan bugs dan inkonsistensi data
-     *    - string: Type safety - mencegah injection attacks dengan memastikan hanya string yang diterima
-     *    - max:255: Mencegah buffer overflow attacks dan DoS melalui input yang sangat panjang
-     *    - unique: Mencegah duplikasi data, menjaga integritas inventory, dan menghindari konflik bisnis logic
+     *    - required: Prevents NULL values that can cause bugs and data inconsistency
+     *    - string: Type safety - prevents injection attacks by ensuring only strings are accepted
+     *    - max:255: Prevents buffer overflow attacks and DoS through extremely long input
+     *    - unique: Prevents data duplication, maintains inventory integrity, avoids business logic conflicts
      *
      * 2. 'amount' - required|numeric|min:0
-     *    - required: Memastikan setiap produk memiliki harga (business rule)
-     *    - numeric: Mencegah type confusion attacks dan memastikan kalkulasi matematis yang akurat
-     *    - min:0: Business logic protection - harga tidak boleh negatif, mencegah manipulasi data finansial
+     *    - required: Ensures every product has a price (business rule)
+     *    - numeric: Prevents type confusion attacks and ensures accurate mathematical calculations
+     *    - min:0: Business logic protection - price cannot be negative, prevents financial data manipulation
      *
      * 3. 'qty' - required|integer|min:0
-     *    - required: Inventory management - setiap produk harus punya data stok
-     *    - integer: Type safety - stok harus berupa bilangan bulat, tidak ada 0.5 unit produk
-     *    - min:0: Mencegah stok negatif yang tidak masuk akal dalam konteks bisnis
+     *    - required: Inventory management - every product must have stock data
+     *    - integer: Type safety - stock must be whole numbers, no 0.5 unit products
+     *    - min:0: Prevents negative stock which doesn't make sense in business context
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            // SECURITY: Unique constraint mencegah duplikasi produk dan konflik inventory
+            // SECURITY: Unique constraint prevents product duplication and inventory conflicts
             'name' => 'required|string|max:255|unique:products,name',
             
-            // SECURITY: Numeric validation mencegah type confusion dan manipulasi data finansial
+            // SECURITY: Numeric validation prevents type confusion and financial data manipulation
             'amount' => 'required|numeric|min:0',
             
-            // SECURITY: Integer validation memastikan stok selalu bilangan bulat yang valid
+            // SECURITY: Integer validation ensures stock is always a valid whole number
             'qty' => 'required|integer|min:0',
         ];
     }
 
     /**
-     * Get custom error messages for validation.
+     * Get custom validation error messages in Indonesian.
+     * 
+     * Provides user-friendly error messages for each validation rule
+     * to improve user experience and clarity.
      *
      * @return array<string, string>
      */
@@ -71,3 +92,4 @@ class StoreProductRequest extends FormRequest
         ];
     }
 }
+
